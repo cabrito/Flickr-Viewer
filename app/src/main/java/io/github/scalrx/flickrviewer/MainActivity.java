@@ -2,6 +2,7 @@ package io.github.scalrx.flickrviewer;
 
 import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity
 {
     // Members
     private ViewPager viewPager;
+    private SwipeRefreshLayout srl;
     private FlickrImageAdapter adapter;
     private ArrayList<FlickrImage> list;
 
@@ -33,10 +35,21 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         viewPager = findViewById(R.id.viewpager);
+        srl = findViewById(R.id.mainSwipeContainer);
         list = new ArrayList<>();
         // Need an AsyncTask to download JSON and parse
         DownloadAsync getFlickrData = new DownloadAsync();
         getFlickrData.execute();
+
+        // For if the user wants to refresh the feed
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                srl.setRefreshing(true);
+                DownloadAsync getFlickrData = new DownloadAsync();
+                getFlickrData.execute();
+            }
+        });
     }
 
     private class DownloadAsync extends AsyncTask<Void, Integer, IOException>
@@ -48,6 +61,7 @@ public class MainActivity extends AppCompatActivity
         protected void onPreExecute()
         {
             super.onPreExecute();
+            list.clear();
         }
 
         @Override
@@ -60,6 +74,8 @@ public class MainActivity extends AppCompatActivity
             }
             else
             {
+                if(srl.isRefreshing())
+                    srl.setRefreshing(false);
                 adapter = new FlickrImageAdapter(getSupportFragmentManager(), list);
                 viewPager.setAdapter(adapter);
             }

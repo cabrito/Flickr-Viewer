@@ -47,18 +47,13 @@ public class ImageFragment extends Fragment
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        String title = getArguments().getString("title");
-        String url = getArguments().getString("url");
-        flickrImage = new FlickrImage(title, url);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
+        String flickrImageTitle = getArguments().getString("title");
+        String flickrImageUrl = getArguments().getString("url");
+        flickrImage = new FlickrImage(flickrImageTitle, flickrImageUrl);
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_image, container, false);
         title = (TextView) view.findViewById(R.id.flickrTitle);
