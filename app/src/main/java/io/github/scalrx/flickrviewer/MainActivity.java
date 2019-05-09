@@ -6,6 +6,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.viewpagerindicator.CirclePageIndicator;
+import com.viewpagerindicator.PageIndicator;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity
     private SwipeRefreshLayout srl;
     private FlickrImageAdapter adapter;
     private ArrayList<FlickrImage> list;
+    private PageIndicator mIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -78,6 +82,9 @@ public class MainActivity extends AppCompatActivity
                     srl.setRefreshing(false);
                 adapter = new FlickrImageAdapter(getSupportFragmentManager(), list);
                 viewPager.setAdapter(adapter);
+                mIndicator = (CirclePageIndicator)findViewById(R.id.view_pager_indicator);
+                mIndicator.setViewPager(viewPager);
+                mIndicator.setCurrentItem(0);
             }
         }
 
