@@ -86,12 +86,12 @@ public class MainActivity extends AppCompatActivity
                     String title = String.valueOf(imageObject.get("title"));
                     JSONObject media = (JSONObject)((JSONObject) image).get("media");
                     String link = String.valueOf(media.get("m"));
-                    System.out.println(title);
-                    System.out.println(link);                                       // TEMPORARY
+                    String linkCut = link.substring(0, link.lastIndexOf("_")) + link.substring(link.lastIndexOf("."));
 
                     // Add new FlickrImages to the list
-                    FlickrImage flickrImage = new FlickrImage(title, link);
+                    FlickrImage flickrImage = new FlickrImage(title, linkCut);
                     list.add(flickrImage);
+                    System.out.println(flickrImage.getUrl());
                 }
                 in.close();
                 return null;

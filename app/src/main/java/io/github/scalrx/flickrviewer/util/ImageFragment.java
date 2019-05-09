@@ -71,7 +71,7 @@ public class ImageFragment extends Fragment
     }
 
     // Logic for downloading a particular file
-    private class DownloadAsync extends AsyncTask<FlickrImage, Integer, IOException>
+    private class DownloadAsync extends AsyncTask<FlickrImage, Integer, Bitmap>
     {
         // Downloads a bitmap from an internet source
         private Bitmap getBitmapFromUrl(String address)
@@ -102,27 +102,30 @@ public class ImageFragment extends Fragment
         }
 
         @Override
-        protected void onPostExecute(IOException e)
+        protected void onPostExecute(Bitmap bitmap)
         {
-            super.onPostExecute(e);
-            if(e != null)
+            super.onPostExecute(bitmap);
+            if(bitmap != null)
             {
+                title.setText(flickrImage.getTitle());
+                image.setImageBitmap(bitmap);
+            }
+            else {
                 title.setText(R.string.bitmap_download_failed);
             }
         }
 
         @Override
-        protected IOException doInBackground(FlickrImage... flickrImages)
+        protected Bitmap doInBackground(FlickrImage... flickrImages)
         {
             Bitmap bitmap = getBitmapFromUrl(flickrImage.getUrl());
             if(bitmap != null)
             {
-                image.setImageBitmap(bitmap);
-                return null;
+                return bitmap;
             }
             else
             {
-                return new IOException();
+                return null;
             }
         }
     }
