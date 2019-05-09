@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Flickr Viewer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bitmap_download_failed">Unable to load image. Check Internet connection.</string>
 </resources>
